@@ -1,42 +1,49 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from app.schemas.auth import LoginRequest
-from app.services.auth_service import authenticate_user
-from app.core.database import get_db
-
-router = APIRouter(
-    prefix="/auth",
-    tags=["Auth"]
-)
-
-@router.post("/login")
-def login(payload: LoginRequest, db: Session = Depends(get_db)):
-    result = authenticate_user(db, payload.email, payload.password)
-    if not result:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid email or password"
-        )
-    return result
 # app/routers/auth.py
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+from typing import Optional
 
 router = APIRouter()
 
-# Handle OPTIONS method for CORS preflight
-@router.options("/login")
-async def options_login():
-    return JSONResponse(
-        content={},
-        headers={
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type",
-        }
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user_id: Optional[int] = None
+    email: str
+
+@router.post("/auth/login", response_model=LoginResponse)
+async def login(request: LoginRequest):
+    """
+    User login endpoint.
+    
+    Example request:
+    {
+        "email": "admin@ssspl.com",
+        "password": "your_password"
+    }
+    """
+    print(f"Login attempt for: {request.email}")
+    
+    # TODO: Add your actual authentication logic here
+    if request.email == "admin@ssspl.com" and request.password == "admin123":
+        return LoginResponse(
+            access_token="dummy_jwt_token_for_testing",
+            token_type="bearer",
+            user_id=1,
+            email=request.email
+        )
+    
+    raise HTTPException(
+        status_code=401,
+        detail="Invalid credentials",
+        headers={"WWW-Authenticate": "Bearer"}
     )
 
-@router.post("/login")
-async def login():
-    # Your login logic
-    pass
+# Add a test endpoint
+@router.get("/auth/test")
+async def test_auth():
+    return {"message": "Auth router is working!"}
