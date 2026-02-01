@@ -10,7 +10,7 @@ app = FastAPI(title="SSSMS HRMS API")
 # ✅ CORS CONFIGURATION
 origins = [
     "http://localhost:8080",
-    "https://sales-services.vercel.app"
+    "https://hrms-one-self.vercel.app"
 ]
 
 app.add_middleware(
