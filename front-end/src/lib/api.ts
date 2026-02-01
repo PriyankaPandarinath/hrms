@@ -63,7 +63,7 @@ api.interceptors.response.use(
 
 export const authAPI = {
   login: (email: string, password: string) =>
-    api.post('/auth/login', { email, password }),
+    api.post('api/vi/auth/login', { email, password }),
 
   logout: () => api.post('/auth/logout'), // optional (can be stubbed)
 
