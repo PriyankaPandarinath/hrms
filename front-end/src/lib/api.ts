@@ -7,7 +7,7 @@ import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'ax
 // const API_BASE_URL =
 //   import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 
-const API_BASE_URL = 'https://hrms-pe6c.onrender.com/api/v1/auth/login';
+const API_BASE_URL = 'https://hrms-pe6c.onrender.com/api/v1';
 
 
 /**
