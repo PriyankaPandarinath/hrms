@@ -18,3 +18,25 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
             detail="Invalid email or password"
         )
     return result
+# app/routers/auth.py
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
+
+router = APIRouter()
+
+# Handle OPTIONS method for CORS preflight
+@router.options("/login")
+async def options_login():
+    return JSONResponse(
+        content={},
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
+        }
+    )
+
+@router.post("/login")
+async def login():
+    # Your login logic
+    pass

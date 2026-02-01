@@ -22,7 +22,7 @@ app.add_middleware(
 )
 
 # ✅ ROUTERS
-app.include_router(auth.router, prefix="/api/v1")
+app.include_router(auth.router)
 # OR if you removed versioning:
 # app.include_router(auth.router)
 
